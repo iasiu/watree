@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/config/config.dart';
+import 'package:watree/config/config.dart';
 
 class WTText extends Text {
   WTText(

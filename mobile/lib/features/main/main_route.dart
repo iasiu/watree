@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/config/config.dart';
-import 'package:mobile/features/history/history_screen.dart';
-import 'package:mobile/features/home/home_cubit.dart';
-import 'package:mobile/features/home/home_screen.dart';
-import 'package:mobile/features/main/tab_cubit.dart';
-import 'package:mobile/widgets/widgets.dart';
-import 'package:mobile/widgets/wt_appbar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:watree/config/config.dart';
+import 'package:watree/features/history/history_cubit.dart';
+import 'package:watree/features/history/history_screen.dart';
+import 'package:watree/features/home/home_cubit.dart';
+import 'package:watree/features/home/home_screen.dart';
+import 'package:watree/features/main/tab_cubit.dart';
+import 'package:watree/widgets/widgets.dart';
 
 class MainRoute extends GoRoute {
   MainRoute()
@@ -17,6 +17,7 @@ class MainRoute extends GoRoute {
             providers: [
               BlocProvider(create: (context) => TabCubit()),
               BlocProvider(create: (context) => HomeCubit()..load()),
+              BlocProvider(create: (context) => HistoryCubit()..load()),
             ],
             child: const MainScreen(),
           ),

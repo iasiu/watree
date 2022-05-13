@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mobile/data/models.dart';
+import 'package:watree/data/models.dart';
 
 part 'home_cubit.freezed.dart';
 

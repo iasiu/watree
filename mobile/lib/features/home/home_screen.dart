@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile/config/config.dart';
-import 'package:mobile/features/home/home_cubit.dart';
-import 'package:mobile/features/home/widgets/info_card.dart';
-import 'package:mobile/widgets/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:watree/config/config.dart';
+import 'package:watree/features/home/home_cubit.dart';
+import 'package:watree/features/home/widgets/info_card.dart';
+import 'package:watree/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -25,15 +25,14 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(32, 16, 32, 0),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    WTText(
-                      todayFormatted,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: WTColor.textGray,
-                    ),
-                  ],
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: WTText(
+                    todayFormatted,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: WTColor.textGray,
+                  ),
                 ),
                 const SizedBox(height: 24),
                 BlocBuilder<HomeCubit, HomeState>(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/generated/l10n.dart';
-import 'package:mobile/wt_navigator.dart';
 import 'package:provider/provider.dart';
+import 'package:watree/generated/l10n.dart';
+import 'package:watree/wt_navigator.dart';
 
 class App extends StatelessWidget {
   App({Key? key}) : super(key: key);

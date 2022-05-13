@@ -149,6 +149,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Temperature °C`
+  String get history_screen_temperature {
+    return Intl.message(
+      'Temperature °C',
+      name: 'history_screen_temperature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Air humidity %`
+  String get history_screen_air_humidity {
+    return Intl.message(
+      'Air humidity %',
+      name: 'history_screen_air_humidity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Soil humidity %`
+  String get history_screen_soil_humidity {
+    return Intl.message(
+      'Soil humidity %',
+      name: 'history_screen_soil_humidity',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

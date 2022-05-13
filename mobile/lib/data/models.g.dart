@@ -20,3 +20,34 @@ Map<String, dynamic> _$$_HomeDataToJson(_$_HomeData instance) =>
       'soilHumidity': instance.soilHumidity,
       'isWatering': instance.isWatering,
     };
+
+_$_HistoryData _$$_HistoryDataFromJson(Map<String, dynamic> json) =>
+    _$_HistoryData(
+      temperaturePoints: (json['temperaturePoints'] as List<dynamic>)
+          .map((e) => DataPoint.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      airHumidityPoints: (json['airHumidityPoints'] as List<dynamic>)
+          .map((e) => DataPoint.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      soilHumidityPoints: (json['soilHumidityPoints'] as List<dynamic>)
+          .map((e) => DataPoint.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$_HistoryDataToJson(_$_HistoryData instance) =>
+    <String, dynamic>{
+      'temperaturePoints': instance.temperaturePoints,
+      'airHumidityPoints': instance.airHumidityPoints,
+      'soilHumidityPoints': instance.soilHumidityPoints,
+    };
+
+_$_DataPoint _$$_DataPointFromJson(Map<String, dynamic> json) => _$_DataPoint(
+      x: (json['x'] as num).toDouble(),
+      y: (json['y'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$$_DataPointToJson(_$_DataPoint instance) =>
+    <String, dynamic>{
+      'x': instance.x,
+      'y': instance.y,
+    };
