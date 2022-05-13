@@ -79,6 +79,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Temperature`
+  String get home_screen_temperature {
+    return Intl.message(
+      'Temperature',
+      name: 'home_screen_temperature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Air humidity`
+  String get home_screen_air_humidity {
+    return Intl.message(
+      'Air humidity',
+      name: 'home_screen_air_humidity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Soil humidity`
+  String get home_screen_soil_humidity {
+    return Intl.message(
+      'Soil humidity',
+      name: 'home_screen_soil_humidity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Currently watering`
+  String get home_screen_watering {
+    return Intl.message(
+      'Currently watering',
+      name: 'home_screen_watering',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get home_screen_watering_yes {
+    return Intl.message(
+      'Yes',
+      name: 'home_screen_watering_yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get home_screen_watering_no {
+    return Intl.message(
+      'No',
+      name: 'home_screen_watering_no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Schedule additional watering`
+  String get home_screen_watering_schedule {
+    return Intl.message(
+      'Schedule additional watering',
+      name: 'home_screen_watering_schedule',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

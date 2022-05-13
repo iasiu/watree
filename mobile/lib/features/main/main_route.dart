@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/config/config.dart';
 import 'package:mobile/features/history/history_screen.dart';
+import 'package:mobile/features/home/home_cubit.dart';
 import 'package:mobile/features/home/home_screen.dart';
 import 'package:mobile/features/main/tab_cubit.dart';
 import 'package:mobile/widgets/widgets.dart';
@@ -12,8 +13,11 @@ class MainRoute extends GoRoute {
   MainRoute()
       : super(
           path: routePath,
-          builder: (context, _) => BlocProvider(
-            create: (context) => TabCubit(),
+          builder: (context, _) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => TabCubit()),
+              BlocProvider(create: (context) => HomeCubit()..load()),
+            ],
             child: const MainScreen(),
           ),
         );
@@ -24,7 +28,7 @@ class MainRoute extends GoRoute {
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
 
-  Widget? _buildBody(WTTab tab) {
+  Widget _buildBody(WTTab tab) {
     switch (tab) {
       case WTTab.home:
         return const HomeScreen();
@@ -37,11 +41,13 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _tabs = [
       BottomNavigationBarItem(
-        icon: const SizedBox(),
+        activeIcon: Icon(Icons.home_filled, color: WTColor.white),
+        icon: Icon(Icons.home_outlined, color: WTColor.black),
         label: context.l10n.main_route_home_tab,
       ),
       BottomNavigationBarItem(
-        icon: const SizedBox(),
+        activeIcon: Icon(Icons.menu_book, color: WTColor.white),
+        icon: Icon(Icons.book, color: WTColor.black),
         label: context.l10n.main_route_history_tab,
       ),
     ];
@@ -52,13 +58,34 @@ class MainScreen extends StatelessWidget {
           titleText: context.l10n.main_route_title,
         ),
         backgroundColor: WTColor.background,
-        body: _buildBody(tab),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: tab.index,
+          backgroundColor: WTColor.mainGreen,
+          iconSize: 28,
+          selectedItemColor: WTColor.white,
+          unselectedItemColor: WTColor.black,
+          selectedFontSize: 16,
+          unselectedFontSize: 16,
           onTap: (index) => context.read<TabCubit>().change(
                 WTTab.values[index],
               ),
           items: _tabs,
+        ),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          switchInCurve: Curves.easeInOut,
+          switchOutCurve: Curves.easeInOut,
+          transitionBuilder: (child, animation) => FadeTransition(
+            opacity: animation,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0.1, 0),
+                end: const Offset(0, 0),
+              ).animate(animation),
+              child: child,
+            ),
+          ),
+          child: _buildBody(tab),
         ),
       ),
     );
