@@ -12,10 +12,10 @@ class WTAppBar extends AppBar {
           key: key,
           title: WTText(
             titleText,
-            fontSize: 20,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
-          backgroundColor: backgroundColor ?? WTColor.background,
+          backgroundColor: backgroundColor ?? WTColor.transparent,
           primary: true,
           centerTitle: true,
           systemOverlayStyle: SystemUiOverlayStyle.dark,

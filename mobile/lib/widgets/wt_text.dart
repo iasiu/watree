@@ -5,6 +5,7 @@ class WTText extends Text {
   WTText(
     String text, {
     Key? key,
+    Color? color,
     double fontSize = 12,
     FontWeight fontWeight = FontWeight.normal,
     int maxLines = 1,
@@ -12,7 +13,7 @@ class WTText extends Text {
           text,
           key: key,
           style: TextStyle(
-            color: WTColor.text,
+            color: color ?? WTColor.text,
             fontSize: fontSize,
             fontWeight: fontWeight,
             overflow: TextOverflow.ellipsis,

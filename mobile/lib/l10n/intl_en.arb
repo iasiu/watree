@@ -1,5 +1,12 @@
 {
     "main_route_title": "Watree",
     "main_route_home_tab": "Home",
-    "main_route_history_tab": "History"
+    "main_route_history_tab": "History",
+    "home_screen_temperature": "Temperature",
+    "home_screen_air_humidity": "Air humidity",
+    "home_screen_soil_humidity": "Soil humidity",    
+    "home_screen_watering": "Currently watering",
+    "home_screen_watering_yes": "Yes",
+    "home_screen_watering_no": "No",
+    "home_screen_watering_schedule": "Schedule additional watering"
 }
