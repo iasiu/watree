@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mobile/config/config.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:watree/config/config.dart';
 
 class WTShimmerCard extends HookWidget {
-  const WTShimmerCard({Key? key}) : super(key: key);
+  const WTShimmerCard({
+    Key? key,
+    this.height = 100,
+  }) : super(key: key);
+
+  final double height;
 
   @override
   Widget build(BuildContext context) => Card(
@@ -17,8 +22,8 @@ class WTShimmerCard extends HookWidget {
           color: WTColor.shimmer,
           colorOpacity: 1,
           duration: const Duration(milliseconds: 1800),
-          child: const SizedBox(
-            height: 100,
+          child: SizedBox(
+            height: height,
             width: double.maxFinite,
           ),
         ),

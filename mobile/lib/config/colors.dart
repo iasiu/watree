@@ -11,6 +11,6 @@ class WTColor {
   static Color get error => Colors.redAccent;
   static Color get success => Colors.greenAccent;
   static Color get shimmer => const Color.fromARGB(255, 202, 202, 202);
-
   static Color get mainGreen => const Color.fromARGB(255, 75, 159, 7);
+  static Color get blue => Colors.blueGrey;
 }

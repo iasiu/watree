@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/config/config.dart';
-import 'package:mobile/widgets/widgets.dart';
+import 'package:watree/config/config.dart';
+import 'package:watree/widgets/wt_text.dart';
 
 class WTButton extends StatelessWidget {
   const WTButton({

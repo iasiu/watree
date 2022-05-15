@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mobile/config/config.dart';
-import 'package:mobile/widgets/widgets.dart';
+import 'package:watree/config/config.dart';
+import 'package:watree/widgets/widgets.dart';
 
 class InfoCard extends HookWidget {
   const InfoCard({
@@ -41,7 +41,8 @@ class InfoCard extends HookWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
           opacity: opacity.value,
           child: Padding(
             padding: const EdgeInsets.all(8.0),

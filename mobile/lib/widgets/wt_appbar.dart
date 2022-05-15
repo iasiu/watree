@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mobile/config/config.dart';
-import 'package:mobile/widgets/wt_text.dart';
+import 'package:watree/config/config.dart';
+import 'package:watree/widgets/widgets.dart';
 
 class WTAppBar extends AppBar {
   WTAppBar({

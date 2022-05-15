@@ -8,5 +8,8 @@
     "home_screen_watering": "Currently watering",
     "home_screen_watering_yes": "Yes",
     "home_screen_watering_no": "No",
-    "home_screen_watering_schedule": "Schedule additional watering"
+    "home_screen_watering_schedule": "Schedule additional watering",
+    "history_screen_temperature": "Temperature °C",
+    "history_screen_air_humidity": "Air humidity %",
+    "history_screen_soil_humidity": "Soil humidity %"
 }
