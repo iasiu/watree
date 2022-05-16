@@ -2,41 +2,111 @@ from wsgiref.simple_server import make_server
 
 import falcon
 
-# Falcon follows the REST architectural style, meaning (among
-# other things) that you think in terms of resources and state
-# transitions, which map to HTTP verbs.
+import firebase_admin
+from firebase_admin import db
 
 
 class SoilHumidity:
     def on_get(self, req, resp):
-        print(req.query_string)
+        data = ref.get()
+        soilHumidity = float(req.query_string)
+        ref.set({
+            "HomeData": {
+                "temperature": data['HomeData']['temperature'],
+                "airHumidity": data['HomeData']['airHumidity'],
+                "soilHumidity": soilHumidity,
+                "isWatering": data['HomeData']['isWatering']
+            },
+            "HistoryData": {
+                "temperaturePoints": data['HistoryData']['temperaturePoints'],
+                "airHumidityPoints": data['HistoryData']['airHumidityPoints'],
+                "soilHumidityPoints": data['HistoryData']['soilHumidityPoints'][1:] + [soilHumidity],
+            },
+        }
+        )
         """Handles GET requests"""
         resp.status = falcon.HTTP_200  # This is the default status
         resp.content_type = falcon.MEDIA_TEXT  # Default is JSON, so override
         resp.text = (
-            f'wilgoc ziemi przyjeta kolego: {req.query_string}\n'
+            f'soil humidity: {req.query_string}\n'
         )
 
 
 class AirHumidity:
     def on_get(self, req, resp):
-        print(req.query_string)
+        data = ref.get()
+        airHumidity = float(req.query_string)
+        ref.set({
+            "HomeData": {
+                "temperature": data['HomeData']['temperature'],
+                "airHumidity": airHumidity,
+                "soilHumidity": data['HomeData']['soilHumidity'],
+                "isWatering": data['HomeData']['isWatering']
+            },
+            "HistoryData": {
+                "temperaturePoints": data['HistoryData']['temperaturePoints'],
+                "airHumidityPoints": data['HistoryData']['airHumidityPoints'][1:] + [airHumidity],
+                "soilHumidityPoints": data['HistoryData']['soilHumidityPoints'],
+            },
+        }
+        )
         """Handles GET requests"""
         resp.status = falcon.HTTP_200
         resp.content_type = falcon.MEDIA_TEXT
         resp.text = (
-            f'wilgoc powietrza przyjeta kolego: {req.query_string}\n'
+            f'air humidity: {req.query_string}\n'
         )
 
 
 class Temperature:
     def on_get(self, req, resp):
-        print(req.query_string)
+        data = ref.get()
+        temperature = float(req.query_string)
+        ref.set({
+            "HomeData": {
+                "temperature": temperature,
+                "airHumidity": data['HomeData']['airHumidity'],
+                "soilHumidity": data['HomeData']['soilHumidity'],
+                "isWatering": data['HomeData']['isWatering']
+            },
+            "HistoryData": {
+                "temperaturePoints": data['HistoryData']['temperaturePoints'][1:] + [temperature],
+                "airHumidityPoints": data['HistoryData']['airHumidityPoints'],
+                "soilHumidityPoints": data['HistoryData']['soilHumidityPoints'],
+            },
+        }
+        )
         """Handles GET requests"""
         resp.status = falcon.HTTP_200
         resp.content_type = falcon.MEDIA_TEXT
         resp.text = (
-            f'temperatura przyjeta kolego: {req.query_string}\n'
+            f'temperature: {req.query_string}\n'
+        )
+
+
+class Watering:
+    def on_get(self, req, resp):
+        data = ref.get()
+        watering = int(req.query_string)
+        ref.set({
+            "HomeData": {
+                "temperature": data['HomeData']['temperature'],
+                "airHumidity": data['HomeData']['airHumidity'],
+                "soilHumidity": data['HomeData']['soilHumidity'],
+                "isWatering": bool(watering)
+            },
+            "HistoryData": {
+                "temperaturePoints": data['HistoryData']['temperaturePoints'],
+                "airHumidityPoints": data['HistoryData']['airHumidityPoints'],
+                "soilHumidityPoints": data['HistoryData']['soilHumidityPoints'],
+            },
+        }
+        )
+        """Handles GET requests"""
+        resp.status = falcon.HTTP_200
+        resp.content_type = falcon.MEDIA_TEXT
+        resp.text = (
+            f'watering: {req.query_string} ({bool(watering)})\n'
         )
 
 
@@ -49,7 +119,16 @@ app.add_route('/air_humidity', AirHumidity())
 
 app.add_route('/temperature', Temperature())
 
+app.add_route('/watering', Watering())
+
 if __name__ == '__main__':
+
+    cred_obj = firebase_admin.credentials.Certificate('watree-cred.json')
+    default_app = firebase_admin.initialize_app(cred_obj, {
+        'databaseURL': 'https://watree-bbbaf-default-rtdb.europe-west1.firebasedatabase.app/'
+    })
+    ref = db.reference("/")
+
     with make_server('', 8000, app) as httpd:
         print('Serving on port 8000...')
 
