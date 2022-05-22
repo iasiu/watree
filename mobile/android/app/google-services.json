@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "168035180527",
+    "firebase_url": "https://watree-bbbaf-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "watree-bbbaf",
+    "storage_bucket": "watree-bbbaf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168035180527:android:1388949d36145766e5601a",
+        "android_client_info": {
+          "package_name": "com.watree.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168035180527-v1vtq9iup7k0s8ekvrs47885snl0ka4k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXeaCB0EOzYUgf-sPzQxMSuZ5rBTF5a_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "168035180527-v1vtq9iup7k0s8ekvrs47885snl0ka4k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "168035180527-f42thb1kf4a7be5ria6nr57diq4t9m4n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.watree.mobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

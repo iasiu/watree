@@ -2,24 +2,24 @@ import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:watree/data/fetch_firebase.dart';
 import 'package:watree/data/models.dart';
 
 part 'history_cubit.freezed.dart';
 
 final random = Random();
 
-double _getRandomIn({
-  required double min,
-  required double max,
-}) {
-  final range = max - min;
-  return random.nextDouble() * range + min;
-}
+// double _getRandomIn({
+//   required double min,
+//   required double max,
+// }) {
+//   final range = max - min;
+//   return random.nextDouble() * range + min;
+// }
 
 List<DataPoint> _getRandomDataIn({
-  required double min,
-  required double max,
-  int count = 10,
+  required List<double> values,
+  int count = 168,
 }) {
   const rangeX = 7.5 - 0.5;
 
@@ -27,7 +27,7 @@ List<DataPoint> _getRandomDataIn({
     count,
     (index) => DataPoint(
       x: index / (count - 1) * rangeX + 0.5,
-      y: _getRandomIn(min: min, max: max),
+      y: values[index],
     ),
   );
 }
@@ -37,15 +37,21 @@ class HistoryCubit extends Cubit<HistoryState> {
 
   Future<void> load() async {
     try {
-      // TODO(iasiu): unmock when backend is ready
-      final data = await Future.delayed(
-        const Duration(seconds: 2),
-      ).then(
-        (_) => HistoryData(
-          temperaturePoints: _getRandomDataIn(min: 18, max: 24),
-          airHumidityPoints: _getRandomDataIn(min: 0, max: 100),
-          soilHumidityPoints: _getRandomDataIn(min: 0, max: 100),
-        ),
+      final response = await FetchFirebase().getHistoryData();
+      List<double> airHumidityPoints = [];
+      List<double> soilHumidityPoints = [];
+      List<double> temperaturePoints = [];
+
+      for (int i = 0; i < 168; i++) {
+        airHumidityPoints.add(response['soilHumidityPoints'][i]*100);
+        soilHumidityPoints.add(response['soilHumidityPoints'][i]*100);
+        temperaturePoints.add(response['temperaturePoints'][i]);
+      }
+
+      HistoryData data =  HistoryData(
+        temperaturePoints: _getRandomDataIn(values: temperaturePoints),
+        airHumidityPoints: _getRandomDataIn(values: airHumidityPoints),
+        soilHumidityPoints: _getRandomDataIn(values: soilHumidityPoints),
       );
 
       final temperatureMaxY =
