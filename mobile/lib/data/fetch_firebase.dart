@@ -8,7 +8,7 @@ class FetchFirebase {
     DataSnapshot response = await _dataRef.child('HomeData').get();
     final data = response.value as dynamic;
     HomeData homeData = HomeData(
-      temperature: data['temperature'],
+      temperature: data['temperature'].toDouble(),
       airHumidity: data['airHumidity'],
       soilHumidity: data['soilHumidity'],
       isWatering: data['isWatering'],

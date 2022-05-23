@@ -45,7 +45,7 @@ class HistoryCubit extends Cubit<HistoryState> {
       for (int i = 0; i < 168; i++) {
         airHumidityPoints.add(response['soilHumidityPoints'][i]*100);
         soilHumidityPoints.add(response['soilHumidityPoints'][i]*100);
-        temperaturePoints.add(response['temperaturePoints'][i]);
+        temperaturePoints.add(response['temperaturePoints'][i].toDouble());
       }
 
       HistoryData data =  HistoryData(
