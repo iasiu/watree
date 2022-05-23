@@ -40,24 +40,9 @@ class HistoryCubit extends Cubit<HistoryState> {
       }
 
       HistoryData data = HistoryData(
-        temperaturePoints: _getDataIn(
-          values: temperaturePoints,
-        )
-            .where(
-              (e) => e.y != -100.0,
-            )
-            .toList(),
-        airHumidityPoints: _getDataIn(values: airHumidityPoints)
-            .where(
-              (e) => e.y != -100.0,
-            )
-            .toList(),
-        soilHumidityPoints: _getDataIn(values: soilHumidityPoints)
-            .where(
-              (e) => e.y != -100.0,
-            )
-            .toList(),
-      );
+          temperaturePoints: _getDataIn(values: temperaturePoints),
+          airHumidityPoints: _getDataIn(values: airHumidityPoints),
+          soilHumidityPoints: _getDataIn(values: soilHumidityPoints));
 
       final temperatureMaxY =
           data.temperaturePoints.map((e) => e.y).toList().max.ceil() + 0.1;
@@ -69,16 +54,8 @@ class HistoryCubit extends Cubit<HistoryState> {
           temperatureMaxY: temperatureMaxY,
           temperatureMinY: temperatureMinY,
           temperaturePoints: data.temperaturePoints,
-          airHumidityPoints: data.airHumidityPoints
-              .where(
-                (e) => e.y != -100.0,
-              )
-              .toList(),
-          soilHumidityPoints: data.soilHumidityPoints
-              .where(
-                (e) => e.y != -100.0,
-              )
-              .toList(),
+          airHumidityPoints: data.airHumidityPoints,
+          soilHumidityPoints: data.soilHumidityPoints,
         ),
       );
     } catch (_, __) {

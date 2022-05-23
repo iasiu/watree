@@ -9,8 +9,8 @@ class FetchFirebase {
     final data = response.value as dynamic;
     HomeData homeData = HomeData(
       temperature: data['temperature'].toDouble(),
-      airHumidity: data['airHumidity'],
-      soilHumidity: data['soilHumidity'],
+      airHumidity: data['airHumidity'].toDouble(),
+      soilHumidity: data['soilHumidity'].toDouble(),
       isWatering: data['isWatering'],
     );
     return homeData;
