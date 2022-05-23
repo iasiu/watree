@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:watree/config/config.dart';
+import 'package:watree/data/models.dart';
 import 'package:watree/features/history/history_cubit.dart';
 import 'package:watree/features/history/widgets/chart_card.dart';
 import 'package:watree/widgets/widgets.dart';
@@ -52,7 +53,9 @@ class HistoryScreen extends StatelessWidget {
                         color: WTColor.success,
                         minY: 0 - 0.1,
                         maxY: 100 + 0.1,
-                        points: success.airHumidityPoints,
+                        points: success.airHumidityPoints
+                            .map((e) => DataPoint(x: e.x, y: e.y * 100))
+                            .toList(),
                       ),
                       const SizedBox(height: 24),
                       ChartCard(
@@ -61,7 +64,9 @@ class HistoryScreen extends StatelessWidget {
                         color: WTColor.blue,
                         minY: 0 - 0.1,
                         maxY: 100 + 0.1,
-                        points: success.soilHumidityPoints,
+                        points: success.soilHumidityPoints
+                            .map((e) => DataPoint(x: e.x, y: e.y * 100))
+                            .toList(),
                       ),
                     ],
                   ),

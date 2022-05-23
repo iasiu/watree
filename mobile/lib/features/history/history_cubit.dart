@@ -11,14 +11,13 @@ final random = Random();
 
 List<DataPoint> _getDataIn({
   required List<double> values,
-  int count = 168,
 }) {
   const rangeX = 7;
 
   return List.generate(
-    count,
+    168,
     (index) => DataPoint(
-      x: index / (count - 1) * rangeX + 0.5,
+      x: index / (168 - 1) * rangeX + 0.5,
       y: values[index],
     ),
   );
@@ -35,15 +34,29 @@ class HistoryCubit extends Cubit<HistoryState> {
       List<double> temperaturePoints = [];
 
       for (int i = 0; i < 168; i++) {
-        airHumidityPoints.add(response['soilHumidityPoints'][i]*100);
-        soilHumidityPoints.add(response['soilHumidityPoints'][i]*100);
+        airHumidityPoints.add(response['soilHumidityPoints'][i].toDouble());
+        soilHumidityPoints.add(response['soilHumidityPoints'][i].toDouble());
         temperaturePoints.add(response['temperaturePoints'][i].toDouble());
       }
 
-      HistoryData data =  HistoryData(
-        temperaturePoints: _getDataIn(values: temperaturePoints),
-        airHumidityPoints: _getDataIn(values: airHumidityPoints),
-        soilHumidityPoints: _getDataIn(values: soilHumidityPoints),
+      HistoryData data = HistoryData(
+        temperaturePoints: _getDataIn(
+          values: temperaturePoints,
+        )
+            .where(
+              (e) => e.y != -100.0,
+            )
+            .toList(),
+        airHumidityPoints: _getDataIn(values: airHumidityPoints)
+            .where(
+              (e) => e.y != -100.0,
+            )
+            .toList(),
+        soilHumidityPoints: _getDataIn(values: soilHumidityPoints)
+            .where(
+              (e) => e.y != -100.0,
+            )
+            .toList(),
       );
 
       final temperatureMaxY =
@@ -56,8 +69,16 @@ class HistoryCubit extends Cubit<HistoryState> {
           temperatureMaxY: temperatureMaxY,
           temperatureMinY: temperatureMinY,
           temperaturePoints: data.temperaturePoints,
-          airHumidityPoints: data.airHumidityPoints,
-          soilHumidityPoints: data.soilHumidityPoints,
+          airHumidityPoints: data.airHumidityPoints
+              .where(
+                (e) => e.y != -100.0,
+              )
+              .toList(),
+          soilHumidityPoints: data.soilHumidityPoints
+              .where(
+                (e) => e.y != -100.0,
+              )
+              .toList(),
         ),
       );
     } catch (_, __) {
