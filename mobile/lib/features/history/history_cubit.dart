@@ -9,19 +9,11 @@ part 'history_cubit.freezed.dart';
 
 final random = Random();
 
-// double _getRandomIn({
-//   required double min,
-//   required double max,
-// }) {
-//   final range = max - min;
-//   return random.nextDouble() * range + min;
-// }
-
-List<DataPoint> _getRandomDataIn({
+List<DataPoint> _getDataIn({
   required List<double> values,
   int count = 168,
 }) {
-  const rangeX = 7.5 - 0.5;
+  const rangeX = 7;
 
   return List.generate(
     count,
@@ -49,9 +41,9 @@ class HistoryCubit extends Cubit<HistoryState> {
       }
 
       HistoryData data =  HistoryData(
-        temperaturePoints: _getRandomDataIn(values: temperaturePoints),
-        airHumidityPoints: _getRandomDataIn(values: airHumidityPoints),
-        soilHumidityPoints: _getRandomDataIn(values: soilHumidityPoints),
+        temperaturePoints: _getDataIn(values: temperaturePoints),
+        airHumidityPoints: _getDataIn(values: airHumidityPoints),
+        soilHumidityPoints: _getDataIn(values: soilHumidityPoints),
       );
 
       final temperatureMaxY =
