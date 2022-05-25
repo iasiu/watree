@@ -11,18 +11,18 @@ class ChartCard extends HookWidget {
     required this.title,
     required this.minY,
     required this.maxY,
-    required List<DataPoint> points,
+    required this.points,
     required this.horizontalInterval,
     required this.color,
     this.animate = true,
     Key? key,
-  })  : _points = points.where((e) => e.y != -100.0).toList(),
+  })  :
         super(key: key);
 
   final String title;
   final double minY;
   final double maxY;
-  final List<DataPoint> _points;
+  final List<DataPoint> points;
   final double horizontalInterval;
   final Color color;
   final bool animate;
@@ -174,7 +174,7 @@ class ChartCard extends HookWidget {
                           isCurved: true,
                           curveSmoothness: 0.2,
                           dotData: FlDotData(show: false),
-                          spots: _points.map((e) => FlSpot(e.x, e.y)).toList(),
+                          spots: points.map((e) => FlSpot(e.x, e.y)).toList(),
                         )
                       ],
                     ),
