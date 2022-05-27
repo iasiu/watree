@@ -4,9 +4,10 @@
 #include <string.h>
 #include <WiFiClient.h>
 
-const char* ssid = "PBL_WiFi";
-const char* password = "IIRPW2020";
-String serverName = "http://192.168.31.87:8000";
+const char* ssid = "iPhone (Jakub)";
+const char* password = "wv5jgt6bxlji";
+String serverName = "https://6735-78-11-141-174.eu.ngrok.io";
+int c =10;
 String stmData = "";
 
 int sendPost(String data){
@@ -51,23 +52,27 @@ void loop() {
   delay(500);
   if(Serial.available() > 0){
     stmData = Serial.readStringUntil('\r\n');
-    delay(500);
     Serial.println("Info from STM: "+stmData);
+    Serial.println(sizeof(stmData));
   }
   delay(1000);
-  if(stmData){
-    String tempa = stmData.substring(0, 5);
-    String huma = stmData.substring(6, 11);
-    String hums = stmData.substring(12, 17);
-//    String levels = stmData.substring(18, 25);
+  String tempa = stmData.substring(0, 5);
+  String huma = stmData.substring(6, 11);
+  String hums = stmData.substring(12, 17);
+//    String levels = stmData.substring(18, 23);
 
+  if(tempa.substring(2,3) == "." && huma.substring(2,3) == "." && hums.substring(2,3)=="."){
     String path1 = serverName + "/temperature?" + tempa;
-    String path2 = serverName + "/air_humidity?" + huma;
-    String path3 = serverName + "/soil_humidity?" + hums;
-    int a = sendPost(path1);
-    int b = sendPost(path2);
-    int c = sendPost(path3);
-    
+  String path2 = serverName + "/air_humidity?" + huma;
+  String path3 = serverName + "/soil_humidity?" + hums;
+  int a = sendPost(path1);
+  int b = sendPost(path2);
+  int c = sendPost(path3);
+   }
+    c--;
+    stmData="";
+    if(c==0){
+      ESP.restart();
     }
   
 }

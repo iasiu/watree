@@ -76,6 +76,10 @@ int __io_putchar(int ch)
     return 1;
 }
 
+void switchValve() {
+	HAL_GPIO_TogglePin(ZAWOR_GPIO_Port, ZAWOR_Pin);
+}
+
 float TempC, Humidity, Level, HumidityS;
 char uartData[50];
 char toSendData[50];
@@ -88,7 +92,6 @@ char toSendData[50];
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -119,6 +122,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   const char message[] = "STM32 init!\r\n";
   HAL_UART_Transmit(&huart2, (uint8_t*)message, strlen(message), HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(ZAWOR_GPIO_Port, ZAWOR_Pin, GPIO_PIN_RESET);
 
   DHT22_Init(GPIOA, GPIO_PIN_8);
   /* USER CODE END 2 */
@@ -133,8 +137,10 @@ int main(void)
 	  		uint32_t valuehum = HAL_ADC_GetValue(&hadc1);
 	  		HumidityS = valuehum / 25.0f;
 	  		sprintf(uartData, "HUMS=%.2f\r\n", HumidityS);
-	  		HAL_UART_Transmit(&huart2, (uint8_t *)uartData, strlen(uartData), HAL_MAX_DELAY);
-//	  		HAL_UART_Transmit(&huart1, (uint8_t *)uartData, strlen(uartData), HAL_MAX_DELAY);
+	  		if(HumidityS<20){
+	  			switchValve();
+	  			HAL_Delay(5000);
+	  		}
 
 	  		//Water level
 	  		HAL_ADC_Start(&hadc2);
@@ -142,27 +148,19 @@ int main(void)
 	  		uint32_t valuelev = HAL_ADC_GetValue(&hadc2);
 	  		Level = valuelev / 25.0f;
 	  		sprintf(uartData, "LEV=%.2f\r\n", Level);
-	  		HAL_UART_Transmit(&huart2, (uint8_t *)uartData, strlen(uartData), HAL_MAX_DELAY);
-//	  		HAL_UART_Transmit(&huart1, (uint8_t *)uartData, strlen(uartData), HAL_MAX_DELAY);
 		if(DHT22_GetTemp_Humidity(&TempC, &Humidity) == 1)
 		{
 			sprintf(uartData, "TEMP=%.1f\r\n", TempC);
-			HAL_UART_Transmit(&huart2, (uint8_t *)uartData, strlen(uartData), HAL_MAX_DELAY);
-//			HAL_UART_Transmit(&huart1, (uint8_t *)uartData, strlen(uartData), HAL_MAX_DELAY);
 			sprintf(uartData, "HUMA=%.1f\r\n", Humidity);
-			HAL_UART_Transmit(&huart2, (uint8_t *)uartData, strlen(uartData), HAL_MAX_DELAY);
-//			HAL_UART_Transmit(&huart1, (uint8_t *)uartData, strlen(uartData), HAL_MAX_DELAY);
 		}
 		else
 		{
 			sprintf(uartData, "\r\nCRC Error!\r\n");
-			HAL_UART_Transmit(&huart2, (uint8_t *)uartData, strlen(uartData), HAL_MAX_DELAY);
-//			HAL_UART_Transmit(&huart1, (uint8_t *)uartData, strlen(uartData), HAL_MAX_DELAY);
 		}
-		sprintf(toSendData,"%.2f,%.2f,%.2f,%.2f\r\n", TempC, Humidity, HumidityS, Level);
+		sprintf(toSendData,"%05.2f,%05.2f,%05.2f,%05.2f\r\n", TempC, Humidity, HumidityS, Level);
 		HAL_UART_Transmit(&huart1, (uint8_t *)toSendData, strlen(toSendData), HAL_MAX_DELAY);
-
-		HAL_Delay(1000);
+		HAL_UART_Transmit(&huart2, (uint8_t *)toSendData, strlen(toSendData), HAL_MAX_DELAY);
+		HAL_Delay(500);
 
     /* USER CODE END WHILE */
 
@@ -455,7 +453,17 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(ZAWOR_GPIO_Port, ZAWOR_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : ZAWOR_Pin */
+  GPIO_InitStruct.Pin = ZAWOR_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(ZAWOR_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PA8 */
   GPIO_InitStruct.Pin = GPIO_PIN_8;
