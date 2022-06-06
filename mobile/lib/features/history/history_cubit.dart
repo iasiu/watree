@@ -2,32 +2,23 @@ import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:watree/data/fetch_firebase.dart';
 import 'package:watree/data/models.dart';
 
 part 'history_cubit.freezed.dart';
 
 final random = Random();
 
-double _getRandomIn({
-  required double min,
-  required double max,
+List<DataPoint> _getDataIn({
+  required List<double> values,
 }) {
-  final range = max - min;
-  return random.nextDouble() * range + min;
-}
-
-List<DataPoint> _getRandomDataIn({
-  required double min,
-  required double max,
-  int count = 10,
-}) {
-  const rangeX = 7.5 - 0.5;
+  const rangeX = 7;
 
   return List.generate(
-    count,
+    168,
     (index) => DataPoint(
-      x: index / (count - 1) * rangeX + 0.5,
-      y: _getRandomIn(min: min, max: max),
+      x: index / (168 - 1) * rangeX + 0.5,
+      y: values[index],
     ),
   );
 }
@@ -37,16 +28,21 @@ class HistoryCubit extends Cubit<HistoryState> {
 
   Future<void> load() async {
     try {
-      // TODO(iasiu): unmock when backend is ready
-      final data = await Future.delayed(
-        const Duration(seconds: 2),
-      ).then(
-        (_) => HistoryData(
-          temperaturePoints: _getRandomDataIn(min: 18, max: 24),
-          airHumidityPoints: _getRandomDataIn(min: 0, max: 100),
-          soilHumidityPoints: _getRandomDataIn(min: 0, max: 100),
-        ),
-      );
+      final response = await FetchFirebase().getHistoryData();
+      List<double> airHumidityPoints = [];
+      List<double> soilHumidityPoints = [];
+      List<double> temperaturePoints = [];
+
+      for (int i = 0; i < 168; i++) {
+        airHumidityPoints.add(response['airHumidityPoints'][i].toDouble());
+        soilHumidityPoints.add(response['soilHumidityPoints'][i].toDouble());
+        temperaturePoints.add(response['temperaturePoints'][i].toDouble());
+      }
+
+      HistoryData data = HistoryData(
+          temperaturePoints: _getDataIn(values: temperaturePoints),
+          airHumidityPoints: _getDataIn(values: airHumidityPoints),
+          soilHumidityPoints: _getDataIn(values: soilHumidityPoints));
 
       final temperatureMaxY =
           data.temperaturePoints.map((e) => e.y).toList().max.ceil() + 0.1;

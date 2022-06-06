@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:watree/data/fetch_firebase.dart';
 import 'package:watree/data/models.dart';
 
 part 'home_cubit.freezed.dart';
@@ -10,19 +11,9 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> load() async {
     emit(const HomeState.loading());
     try {
-      // TODO(iasiu): unmock when backend is ready
-      final data = await Future.delayed(
-        const Duration(seconds: 3),
-      ).then(
-        (_) => const HomeData(
-          temperature: 29.1,
-          airHumidity: 0.56,
-          soilHumidity: 0.78,
-          isWatering: false,
-        ),
-      );
+      HomeData homeData = await FetchFirebase().getHomeData();
 
-      emit(HomeState.success(data: data));
+      emit(HomeState.success(data: homeData));
     } catch (_, __) {
       emit(const HomeState.failure());
     }

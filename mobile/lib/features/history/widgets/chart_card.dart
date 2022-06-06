@@ -7,7 +7,7 @@ import 'package:watree/data/models.dart';
 import 'package:watree/widgets/widgets.dart';
 
 class ChartCard extends HookWidget {
-  const ChartCard({
+  ChartCard({
     required this.title,
     required this.minY,
     required this.maxY,
@@ -16,7 +16,8 @@ class ChartCard extends HookWidget {
     required this.color,
     this.animate = true,
     Key? key,
-  }) : super(key: key);
+  })  :
+        super(key: key);
 
   final String title;
   final double minY;
